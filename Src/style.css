@@ -1,56 +1,56 @@
 body {
-    background: white;
+  background: white;
 }
 
 .maincontainer {
-    border: 1.5px solid #D0D3D5;
-    border-radius: 15px;
-    margin: 30px auto;
+  border: 1.5px solid #d0d3d5;
+  border-radius: 15px;
+  margin: 30px auto;
 }
 
 .row {
-    justify-content: center;
+  justify-content: center;
 }
 
 .searchlocation {
-    float: right;
-    width: auto;
+  float: right;
+  width: auto;
 }
 
 #search-engine,
 .cityName {
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
 
 .tempbtns .btn {
-    margin-right: 15px;
+  margin-right: 15px;
 }
 
 .maincontainer .row {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 
 .forecast .col {
-    padding: 7px;
+  padding: 7px;
 }
 
 .forecast .col .card {
-    background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
-    box-shadow: 0 10px 1rem rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    transition: all 0.6s ease;
+  background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+  box-shadow: 0 10px 1rem rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  transition: all 0.6s ease;
 }
 
 .forecast .col .card:hover {
-    transform: translateY(10px);
-    box-shadow: none;
+  transform: translateY(10px);
+  box-shadow: none;
 }
 
 .forecast img {
-    margin: 0 auto;
-    max-width: 40%;
+  margin: 0 auto;
+  max-width: 40%;
 }
 
 .maincity img {
-    max-width: 20%;
+  max-width: 20%;
 }
