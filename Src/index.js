@@ -1,7 +1,7 @@
 let currentDateTime = new Date();
 
 let h4 = document.querySelector("h4");
-
+console.log(currentDateTime);
 let months = [
   "January",
   "February",

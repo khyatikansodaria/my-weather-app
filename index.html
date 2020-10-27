@@ -1,107 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Forcast App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="Src/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weather Forcast App</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
-  <link rel="stylesheet" href="Src/style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-</head>
-
-<body>
-  <div class="container maincontainer">
-    <div class="row row-cols-sm-2">
-      <div classs="col">
-        <form class="input-group searchlocation">
-          <input type="search" class="form-control" id="search-engine" placeholder="Search for the city..." aria-label="Search"
-            aria-describedby="searchbtn" autofocus=off required />
-          <button class="btn btn-light ml-2" type="submit" id="searchbtn">
-            <i class="fas fa-search"></i>
+  <body>
+    <div class="container maincontainer">
+      <div class="row row-cols-1 row-cols-sm-2 justify-sm-content-center">
+        <div classs="col">
+          <form class="input-group searchlocation float-sm-right">
+            <input
+              type="search"
+              class="form-control"
+              id="search-engine"
+              placeholder="Search for the city..."
+              aria-label="Search"
+              aria-describedby="searchbtn"
+              required
+            />
+            <button class="btn btn-light ml-2" type="submit" id="searchbtn">
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
+        </div>
+        <div
+          class="col tempbtns mt-2 mt-sm-0 justify-content-center justify-content-sm-start d-flex"
+        >
+          <button id="cntloc" class="btn btn-light" type="button">
+            <i class="fas fa-map-marked-alt"></i>
           </button>
-        </form>
+          <button class="btn btn-light disabled" type="button" id="tc" disabled>
+            °C
+          </button>
+          <button class="btn btn-light" type="button" id="tf">°F</button>
+        </div>
       </div>
-      <div class="col  tempbtns">
-        <button id="cntloc" class="btn btn-light" type="button">
-          <i class="fas fa-map-marked-alt"></i>
-        </button>
-        <button class="btn btn-light active" type="button" id="tc">°C</button>
-        <button class="btn btn-light" type="button" id="tf">°F</button>
-      </div>
-    </div>
-    <div class="row">
+      <h4 class="greet text-center">Good Morning</h4>
       <h4 class="text-center" id="date-time">
         Saturday, September 5, 2020<br />
         12:47 p.m. Pacific Time (PT)
       </h4>
-      <!-- <h4 class="text-center" id="date-time">
-        <span id="cntdate">Saturday, September 5, 2020</span><br />
-        <span id="cnttime">12:47 p.m. Pacific Time (PT)</span>
-      </h4> -->
-    </div>
-    <div class="row text-center align-items-center">
-      <div class="col-12 col-md-4 maincity">
-        <h2 class="cityName">Vancouver, BC</h2>
-        <img id="wtypeicon" src="img/partly-cloudy.svg" alt="sun" />
-        <h3 id="tempCF"> <span id="current-temp">20</span><span>°C</span></h3>
-        <h5 id="wtype"> Partly Cloudy </h5>
-        <h5> Feels like <span id = "feelslike">21</span>°C</h5>
-        </h5>
-      </div>
-      <div class="col-12 col-md-4">
-        <img src="img/fall.png" alt="tempimg" class="img-fluid" />
-      </div>
-      <div class="col-12 col-md-4">
-        <h5>Precipitation: <span id="prcpt">15</span>% </h5>
-        <h5>Humidity: <span id="humidity">61</span>%</h5>
-        <h5>Wind: <span id="wind">8</span> meter/sec</h5>
-      </div>
-    </div>
-    <div class="row row-cols-2 row-cols-sm-2 row-cols-md-5 text-center forecast">
-      <div class="col">
-        <div class="card">
-        <h4 id="pred1day">Sunday</h4>
-        <img id="pred1img" src="img/sun.svg" alt="sun">
-        <h4><span id="pred1temp">24</span>°C</h4>
+      <div class="row text-center align-items-center">
+        <div class="col-12 col-md-3 maincity">
+          <h2 class="cityName">
+            <span id="city">Vancouver</span>,<span id="country">CA</span>
+          </h2>
+          <img id="wtypeicon" src="img/partly-cloudy.svg" alt="sun" />
+          <h3 id="tempCF"><span id="current-temp">20</span><span>°C</span></h3>
+          <h5 id="wtype">Partly Sunny</h5>
         </div>
-      </div>
-      <div class="col">
-        <div class="card">
-        <h4 id="pred2day">Monday</h4>
-        <img id="pred2img" src="img/partly-cloudy.svg" alt="sun">
-        <h4><span id="pred2temp"> 20</span>°C</h4>
+        <div class="col-12 col-md-6">
+          <img src="img/fall.png" alt="tempimg" class="img-fluid" />
         </div>
-      </div>
-      <div class="col">
-        <div class="card">
-        <h4 id="pred3day">Tuesday</h4>
-        <img id="pred3img" src="img/wind.svg" alt="wind">
-        <h4><span id="pred3temp">18</span>°C</h4>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-        <h4 id="pred4day">Wednesday</h4>
-        <img id="pred4img" src="img/thunderstorm.svg" alt="sun">
-        <h4><span id="pred4temp">19</span> °C</h4>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-        <h4 id="pred5day">Thursday</h4>
-        <img id="pred5img" src="img/partly-cloudy.svg" alt="sun">
-        <h4><span id="pred5temp">20</span>°C</h4>
-        </div>
-      </div>
-    </div>
-    <p>
-      <a href="https://github.com/khyatipatel1624/my-weather-app" target="_blank">Open-source code</a>, by Khyati Kansodaria
-    </p>
-  </div>
-  <script src="https://kit.fontawesome.com/306a13540f.js" crossorigin="anonymous"></script>
-  <script src="Src/index.js"></script>
-</body>
+        <div class="col-12 col-md-3">
+          <h5>
+            <i class="fas fa-thermometer-half"></i><br />Feels like
+            <span id="feelslike">21</span><span>°C</span>
+          </h5>
 
+          <h5>
+            <i class="fas fa-tint"></i><br />Humidity:
+            <span id="humidity">61</span>%
+          </h5>
+
+          <h5>
+            <i class="fas fa-wind"></i><br />Wind:
+            <span id="wind">8</span> meter/sec
+          </h5>
+        </div>
+      </div>
+      <div
+        class="row row-cols-2 row-cols-sm-2 row-cols-md-5 text-center forecast mt-5"
+      >
+        <div class="col">
+          <div class="card">
+            <h4 id="pred1day">Sunday</h4>
+            <img id="pred1img" src="img/sun.svg" alt="sun" />
+            <h4><span id="pred1temp">24</span><span>°C</span></h4>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <h4 id="pred2day">Monday</h4>
+            <img id="pred2img" src="img/partly-cloudy.svg" alt="sun" />
+            <h4><span id="pred2temp">20</span><span>°C</span></h4>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <h4 id="pred3day">Tuesday</h4>
+            <img id="pred3img" src="img/wind.svg" alt="wind" />
+            <h4><span id="pred3temp">18</span><span>°C</span></h4>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <h4 id="pred4day">Wednesday</h4>
+            <img id="pred4img" src="img/thunderstorm.svg" alt="sun" />
+            <h4><span id="pred4temp">19</span><span>°C</span></h4>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <h4 id="pred5day">Thursday</h4>
+            <img id="pred5img" src="img/partly-cloudy.svg" alt="sun" />
+            <h4><span id="pred5temp">20</span><span>°C</span></h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container ftr">
+      <h4>
+        <a
+          href="https://github.com/khyatipatel1624/my-weather-app"
+          target="_blank"
+          >Open-source Code</a
+        >
+        by Khyati Kansodaria
+      </h4>
+    </div>
+    <script
+      src="https://kit.fontawesome.com/306a13540f.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="Src/index.js"></script>
+  </body>
 </html>
