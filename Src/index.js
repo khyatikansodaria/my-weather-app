@@ -1,7 +1,22 @@
 let currentDateTime = new Date();
 
 let h4 = document.querySelector("h4");
-console.log(currentDateTime);
+
+// Given target offset wrt UTC (in sec), returns target timestamp (in ms),
+// where target is a specific city
+function getTimestamp(targetTimestampInSec, targetOffsetInSec) {
+  let now = new Date();
+  if (targetTimestampInSec !== null) {
+    now = new Date(targetTimestampInSec * 1000);
+  }
+  // now.getTimezoneOffset() returns local offset wrt UTC in minutes as UTC time - your local time
+  let localOffsetInMs = now.getTimezoneOffset() * 60 * 1000;
+  let targetOffsetInMs = targetOffsetInSec * 1000;
+  let targetTimestamp = now.getTime() + localOffsetInMs + targetOffsetInMs;
+  return targetTimestamp;
+}
+
+    
 let months = [
   "January",
   "February",
@@ -34,40 +49,123 @@ let currentHour = currentDateTime.getHours();
 let currentMinute = currentDateTime.getMinutes();
 //let currentSecond = currentDateTime.getSeconds();
 //let currentMillisecond = currentDateTime.getMilliseconds();
-document.querySelector(
-  "#date-time"
-).innerHTML = `${currentDay}, ${currentMonth} ${currentDate}, ${currentYear}<br /> ${currentHour}:${currentMinute} GMT`;
+    
+//document.querySelector(
+//  "#date-time"
+//).innerHTML = `${currentDay}, ${currentMonth} ${currentDate}, ${currentYear}<br /> ${currentHour}:${currentMinute} GMT`;
 
 let btnc = document.querySelector("#tc");
 btnc.addEventListener("click", tempftoc);
 let btnf = document.querySelector("#tf");
 btnf.addEventListener("click", tempctof);
-let temperature = document.querySelector("#tempCF span");
-let temperatureC = document.querySelector("#tempCF span:nth-child(2)");
+let temp = document.querySelector("#tempCF span");
+let tempu = document.querySelector("#tempCF span:nth-child(2)");
+let tempf = document.querySelector("#feelslike");
+let tempfu = document.querySelector("#feelslike + span");
+let temp1 = document.querySelector("#pred1temp");
+let temp1u = document.querySelector("#pred1temp + span");
+let temp2 = document.querySelector("#pred2temp");
+let temp2u = document.querySelector("#pred2temp + span");
+let temp3 = document.querySelector("#pred3temp");
+let temp3u = document.querySelector("#pred3temp + span");
+let temp4 = document.querySelector("#pred4temp");
+let temp4u = document.querySelector("#pred4temp + span");
+let temp5 = document.querySelector("#pred5temp");
+let temp5u = document.querySelector("#pred5temp + span");
 
 function tempctof() {
-  let temp = temperature.innerHTML;
-  temp = Math.round(temp);
-  temp = Math.round(temp * 1.8 + 32);
-  temperature.innerHTML = temp;
-  temperatureC.innerHTML = "°F";
-  btnf.classList.add("active");
-  btnc.classList.remove("active");
+  btnf.classList.add("disabled");
+  btnf.disabled=true;
+  btnc.classList.remove("disabled");
+  btnc.disabled=false;
+  function convert(t) { 
+      let temp = t.innerHTML;
+      temp = Math.round(temp);
+      temp = Math.round(temp * 1.8 + 32);
+      t.innerHTML = temp;
+  }
+    convert(temp);
+    convert(tempf);
+    convert(temp1);
+    convert(temp2);
+    convert(temp3);
+    convert(temp4);
+    convert(temp5);
+  tempu.innerHTML = "°F";
+  tempfu.innerHTML = "°F";
+  temp1u.innerHTML = "°F";
+  temp2u.innerHTML = "°F";
+  temp3u.innerHTML = "°F";
+  temp4u.innerHTML = "°F";
+  temp5u.innerHTML = "°F";
 }
 
 function tempftoc() {
-  let temp = temperature.innerHTML;
-  temp = Math.round(temp);
-  temp = Math.round((temp - 32) / 1.8);
-  temperature.innerHTML = temp;
-  temperatureC.innerHTML = "°C";
-  btnc.classList.add("active");
-  btnf.classList.remove("active");
+  btnc.classList.add("disabled");
+  btnc.disabled=true;
+  btnf.classList.remove("disabled");
+  btnf.disabled=false;
+  function convert(t){
+    let temp = t.innerHTML;
+    temp = Math.round(temp);
+    temp = Math.round((temp - 32) / 1.8);
+    t.innerHTML = temp;   
+  }
+    convert(temp);
+    convert(tempf);
+    convert(temp1);
+    convert(temp2);
+    convert(temp3);
+    convert(temp4);
+    convert(temp5);
+  tempu.innerHTML = "°C";
+  tempfu.innerHTML = "°C";
+  temp1u.innerHTML = "°C";
+  temp2u.innerHTML = "°C";
+  temp3u.innerHTML = "°C";
+  temp4u.innerHTML = "°C";
+  temp5u.innerHTML = "°C";
 }
 // console.log(temperature.innerHTML);
 // console.log(temperatureC.innerHTML);
 let city = "";
 
+// GREETING ===================================================================
+function greet(timestamp) {
+  let greetingElement = document.querySelector(".greet");
+  let now = new Date(timestamp);
+  let hours = now.getHours();
+  if (hours >= 5 && hours < 12) {
+    greetingElement.innerHTML = `Good Morning, ${city}!`;
+  } else if (hours >= 12 && hours < 18) {
+    greetingElement.innerHTML = `Good Afternoon, ${city}!`;
+  } else if (hours >= 18 && hours < 22) {
+    greetingElement.innerHTML = `Good Evening, ${city}!`;
+  } else {
+    greetingElement.innerHTML = `Good Night, ${city}!`;
+  }
+}
+
+//function formatTime(timestamp) {
+//  let now = new Date(timestamp);
+//    function lzeros(value) {
+//          if (value < 10) {
+//            return (value = `0${value}`);
+//          } else {
+//            return value;
+//          }
+//        }
+//  let hours = now.getHours();
+//  let minutes = now.getMinutes();
+//  let time = `${lzeros(hours)}:${lzeros(minutes)}`;
+//  return time;
+//}
+
+//Find lat and long
+function findloc(event){
+  event.preventDefault();
+  navigator.geolocation.getCurrentPosition(showPosition);
+}
 
 function showPosition(position) {
   //console.log(position);
@@ -77,30 +175,38 @@ function showPosition(position) {
   console.log(longitude);
 
   let apiKey = "82dadf9031c6bca3436ed3908ea2b7b5";
+//call api for current weather
   let apiEndpoint2 = "https://api.openweathermap.org/data/2.5/weather";
   let apiUrl2 = `${apiEndpoint2}?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
-
-  axios.get(apiUrl2).then(showlocTemp);
-}
-function findloc(event){
-  event.preventDefault();
-  navigator.geolocation.getCurrentPosition(showPosition);
+  axios.get(apiUrl2).then(showTemp);
+//call api for forecast
+  let apiEndpoint1 = "https://api.openweathermap.org/data/2.5/forecast";
+  let apiUrl1 = `${apiEndpoint1}?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl1).then(showTemp1);
 }
 
 document.querySelector("#cntloc").addEventListener("click", findloc);
-function showlocTemp(response) {
+function showTemp(response) {
   console.log(response);
   date = response.data.dt;
   cntw = response.data;
-    let cntdt = new Date(date * 1000);
-  console.log(cntdt.toUTCString());
-   document.querySelector("h2").innerHTML = cntw.name;
+  console.log(cntw.sys.country);
+//  let cntdt = new Date(date * 1000);
+//  console.log(cntdt.toUTCString());
+  document.querySelector("#city").innerHTML = cntw.name;
+  document.querySelector("#country").innerHTML = cntw.sys.country;
   // let cntdate = cntdt.toUTCString().slice(0,16);
   // let cnttime =cntdt.toUTCString().slice(17,);
-    document.querySelector("#date-time").innerHTML = `${days[cntdt.getDay()]}, ${months[cntdt.getMonth()]} ${cntdt.getDate()}, ${cntdt.getFullYear()}<br /> ${cntdt.getHours()}:${cntdt.getMinutes()} GMT`;
+  let timestamp = getTimestamp(null, response.data.timezone);
+  let now = new Date(timestamp);
+  console.log(now);
+  console.log(now.toLocaleString());
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+  greet(timestamp);
+    document.querySelector("#date-time").innerHTML = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}<br/> ${now.getHours()}:${now.getMinutes()} GMT`;
   // document.querySelector("#cntdate").innerHTML = cntdate;
   // document.querySelector("#cnttime").innerHTML = cnttime;
-
   document.querySelector("#current-temp").innerHTML = Math.round(cntw.main.temp);
   document.querySelector("#wtypeicon").src = `http://openweathermap.org/img/wn/${cntw.weather[0].icon}@2x.png`;
 
@@ -115,39 +221,16 @@ function showCity(event) {
   event.preventDefault();
   city = document.querySelector("#search-engine").value;
   console.log(city);
-  document.querySelector("h2").innerHTML = `${city}`;
+//  document.querySelector("h2").innerHTML = `${city}`;
 
   let apiKey = "82dadf9031c6bca3436ed3908ea2b7b5";
   let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
   let apiUrl = `${apiEndpoint}?q=${city}&appid=${apiKey}&units=metric&precipitation=yes`;
-  axios.get(apiUrl).then(showTemp);
+ axios.get(apiUrl).then(showTemp).catch(err => { alert(`The ${city} is not found Please check the city name and enter correct city name.`);});
   let apiEndpoint1 = "https://api.openweathermap.org/data/2.5/forecast";
   let apiUrl1 = `${apiEndpoint1}?q=${city}&appid=${apiKey}&units=metric`;
-  axios.get(apiUrl1).then(showTemp1);
-}
+  axios.get(apiUrl1).then(showTemp1).catch(err => { console.log("No city found"); });
 
-
-function showTemp(response) {
-  console.log(response);
-  date = response.data.dt;
-  cntw = response.data;
-    let cntdt = new Date(date * 1000);
-  console.log(cntdt.toUTCString());
-  // let cntdate = cntdt.toUTCString().slice(0,16);
-  // let cnttime =cntdt.toUTCString().slice(17,);
-    document.querySelector("#date-time").innerHTML = `${days[cntdt.getDay()]}, ${months[cntdt.getMonth()]} ${cntdt.getDate()}, ${cntdt.getFullYear()}<br /> ${cntdt.getHours()}:${cntdt.getMinutes()} GMT`;
-  // document.querySelector("#cntdate").innerHTML = cntdate;
-  // document.querySelector("#cnttime").innerHTML = cnttime;
-
-  document.querySelector("#current-temp").innerHTML = Math.round(cntw.main.temp);
-  document.querySelector("#wtypeicon").src = `http://openweathermap.org/img/wn/${cntw.weather[0].icon}@2x.png`;
-
-  document.querySelector("#wtype").innerHTML = cntw.weather[0].description;
-  document.querySelector("#feelslike").innerHTML = Math.round(cntw.main.feels_like);
-
-  // document.querySelector('#prcpt').innerHTML = Math.round(cntw.pop)
-  document.querySelector('#humidity').innerHTML = Math.round(cntw.main.humidity);
-  document.querySelector('#wind').innerHTML = Math.round(cntw.wind.speed);
 }
 
 function showTemp1(response) {
@@ -203,4 +286,6 @@ function showTemp1(response) {
   document.querySelector("#pred5img").src =  `http://openweathermap.org/img/wn/${pred5.weather[0].icon}@2x.png`;
   document.querySelector("#pred5temp").innerHTML =  Math.round(pred5.main.temp);
 }
+
+// error function if city doesn't exist
 document.querySelector(".searchlocation").addEventListener("submit", showCity);
