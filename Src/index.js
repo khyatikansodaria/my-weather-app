@@ -47,12 +47,7 @@ let days = [
 let currentDay = days[currentDateTime.getDay()];
 let currentHour = currentDateTime.getHours();
 let currentMinute = currentDateTime.getMinutes();
-//let currentSecond = currentDateTime.getSeconds();
-//let currentMillisecond = currentDateTime.getMilliseconds();
-    
-//document.querySelector(
-//  "#date-time"
-//).innerHTML = `${currentDay}, ${currentMonth} ${currentDate}, ${currentYear}<br /> ${currentHour}:${currentMinute} GMT`;
+
 
 let btnc = document.querySelector("#tc");
 btnc.addEventListener("click", tempftoc);
@@ -130,7 +125,7 @@ function tempftoc() {
 // console.log(temperatureC.innerHTML);
 let city = "";
 
-// GREETING ===================================================================
+// Greetings
 function greet(timestamp) {
   let greetingElement = document.querySelector(".greet");
   let now = new Date(timestamp);
@@ -145,21 +140,6 @@ function greet(timestamp) {
     greetingElement.innerHTML = `Hello! Good Night ${city}!`;
   }
 }
-
-//function formatTime(timestamp) {
-//  let now = new Date(timestamp);
-//    function lzeros(value) {
-//          if (value < 10) {
-//            return (value = `0${value}`);
-//          } else {
-//            return value;
-//          }
-//        }
-//  let hours = now.getHours();
-//  let minutes = now.getMinutes();
-//  let time = `${lzeros(hours)}:${lzeros(minutes)}`;
-//  return time;
-//}
 
 //Find lat and long
 function findloc(event){
@@ -191,8 +171,7 @@ function showTemp(response) {
   date = response.data.dt;
   cntw = response.data;
   console.log(cntw.sys.country);
-//  let cntdt = new Date(date * 1000);
-//  console.log(cntdt.toUTCString());
+
   document.querySelector("#city").innerHTML = cntw.name;
   document.querySelector("#country").innerHTML = cntw.sys.country;
   // let cntdate = cntdt.toUTCString().slice(0,16);
@@ -205,15 +184,13 @@ function showTemp(response) {
   let minutes = now.getMinutes();
   greet(timestamp);
     document.querySelector("#date-time").innerHTML = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}<br/> ${now.getHours()}:${now.getMinutes()} GMT`;
-  // document.querySelector("#cntdate").innerHTML = cntdate;
-  // document.querySelector("#cnttime").innerHTML = cnttime;
+ 
   document.querySelector("#current-temp").innerHTML = Math.round(cntw.main.temp);
   document.querySelector("#wtypeicon").src = `http://openweathermap.org/img/wn/${cntw.weather[0].icon}@2x.png`;
 
   document.querySelector("#wtype").innerHTML = cntw.weather[0].description;
   document.querySelector("#feelslike").innerHTML = Math.round(cntw.main.feels_like);
 
-  // document.querySelector('#prcpt').innerHTML = Math.round(cntw.pop)
   document.querySelector('#humidity').innerHTML = Math.round(cntw.main.humidity);
   document.querySelector('#wind').innerHTML = Math.round(cntw.wind.speed);
 }
@@ -221,7 +198,6 @@ function showCity(event) {
   event.preventDefault();
   city = document.querySelector("#search-engine").value;
   console.log(city);
-//  document.querySelector("h2").innerHTML = `${city}`;
 
   let apiKey = "82dadf9031c6bca3436ed3908ea2b7b5";
   let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
@@ -247,14 +223,6 @@ function showTemp1(response) {
   date4 = pred4.dt
   pred5 = response.data.list[33]
   date5 = pred5.dt
-  // let temp = Math.round(response.data.);
-  // console.log(temp);
-  // console.log(cntdt.toUTCString());
-  // let cntdate = cntdt.toUTCString().slice(0,16);
-  // let cnttime =cntdt.toUTCString().slice(17,);
-// console.log(cntdate);
-// console.log(typeof(cntdate));
-// console.log(cnttime);
 
   // pred1 logic
   let dt1 = new Date(date1 * 1000);
