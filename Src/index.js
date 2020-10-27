@@ -136,13 +136,13 @@ function greet(timestamp) {
   let now = new Date(timestamp);
   let hours = now.getHours();
   if (hours >= 5 && hours < 12) {
-    greetingElement.innerHTML = `Good Morning, ${city}!`;
+    greetingElement.innerHTML = `Hello! Good Morning, ${city}!`;
   } else if (hours >= 12 && hours < 18) {
-    greetingElement.innerHTML = `Good Afternoon, ${city}!`;
+    greetingElement.innerHTML = `Hello! Good Afternoon, ${city}!`;
   } else if (hours >= 18 && hours < 22) {
-    greetingElement.innerHTML = `Good Evening, ${city}!`;
+    greetingElement.innerHTML = `Hello! Good Evening, ${city}!`;
   } else {
-    greetingElement.innerHTML = `Good Night, ${city}!`;
+    greetingElement.innerHTML = `Hello! Good Night, ${city}!`;
   }
 }
 
